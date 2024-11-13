@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 import { ConnectionOptions } from "mysql2";
-import dotenvFlow from "dotenv";
+import dotenvFlow from "dotenv-flow";
 
 if (process.env.NODE_ENV !== "production") {
   dotenvFlow.config();
