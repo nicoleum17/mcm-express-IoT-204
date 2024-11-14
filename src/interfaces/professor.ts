@@ -2,13 +2,10 @@
 export interface Professor {
   id?: number;
   first_name: string;
+  department: string;
   last_name: string;
-  date_of_birth: string;
   email: string;
-  address?: string;
   phone?: string;
-  gender: "M" | "F" | "Otro";
-  grade_level: string;
 }
 
 export interface PaginatedProfessor {

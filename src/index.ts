@@ -32,7 +32,7 @@ app.use(express.json());
 
 // Rutas de la api
 app.use("/api/v1/student", studentRouter);
-app.use("/api/v1/professor", professorRouter);
+app.use("/professor", professorRouter);
 
 // Rutas de prueba
 app.use("/error", testRoutes);

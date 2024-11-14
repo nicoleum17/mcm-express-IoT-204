@@ -8,12 +8,12 @@ export const findAllProfessors = async (
   offset: number,
 ): Promise<PaginatedProfessor> => {
   const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT * FROM professors LIMIT ? OFFSET ?",
+    "SELECT * FROM teachers LIMIT ? OFFSET ?",
     [limit, offset],
   );
   // Consulta para obtener el total de registros
   const [totalRows] = (await pool.query(
-    "SELECT COUNT(*) as count FROM professors",
+    "SELECT COUNT(*) as count FROM teachers",
   )) as [{ count: number }[], unknown];
   const total = totalRows[0].count;
 
@@ -32,29 +32,11 @@ export const findAllProfessors = async (
 export const insertProfessor = async (
   professor: Professor,
 ): Promise<Professor> => {
-  const {
-    first_name,
-    last_name,
-    date_of_birth,
-    email,
-    address,
-    phone,
-    gender,
-    grade_level,
-  } = professor;
+  const { first_name, department, last_name, email, phone } = professor;
   const [result] = await pool.query<ResultSetHeader>(
-    `INSERT INTO professor (first_name, last_name, date_of_birth, email, address, phone, gender, grade_level) 
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      first_name,
-      last_name,
-      date_of_birth,
-      email,
-      address,
-      phone,
-      gender,
-      grade_level,
-    ],
+    `INSERT INTO teachers (first_name, department, last_name, email, phone) 
+     VALUES (?, ?, ?, ?, ?)`,
+    [first_name, department, last_name, email, phone],
   );
   const { insertId } = result;
   return { id: insertId, ...professor };
@@ -64,47 +46,23 @@ export const updateProfessor = async (
   id: number,
   professor: Professor,
 ): Promise<Professor> => {
-  const {
-    first_name,
-    last_name,
-    date_of_birth,
-    email,
-    address,
-    phone,
-    gender,
-    grade_level,
-  } = professor;
+  const { first_name, department, last_name, email, phone } = professor;
   await pool.query<ResultSetHeader>(
-    `UPDATE professors
+    `UPDATE teachers
      SET first_name = ?, 
+         department = ?,
          last_name = ?, 
-         date_of_birth = ?, 
          email = ?, 
-         address = ?, 
          phone = ?, 
-         gender = ?, 
-         grade_level = ?
-     WHERE id = ?;`,
-    [
-      first_name,
-      last_name,
-      date_of_birth,
-      email,
-      address,
-      phone,
-      gender,
-      grade_level,
-      id,
-    ],
+     WHERE id = ?`,
+    [first_name, department, last_name, email, phone],
   );
 
   return { id, ...professor };
 };
 
 export const deleteProfessor = async (id: number): Promise<number> => {
-  await pool.query<ResultSetHeader>("DELETE FROM professors WHERE id = ?", [
-    id,
-  ]);
+  await pool.query<ResultSetHeader>("DELETE FROM teachers WHERE id = ?", [id]);
 
   return id;
 };
