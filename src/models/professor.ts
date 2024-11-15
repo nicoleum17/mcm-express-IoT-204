@@ -49,13 +49,13 @@ export const updateProfessor = async (
   const { first_name, department, last_name, email, phone } = professor;
   await pool.query<ResultSetHeader>(
     `UPDATE teachers
-     SET first_name = ?, 
-         department = ?,
-         last_name = ?, 
-         email = ?, 
-         phone = ?, 
-     WHERE id = ?`,
-    [first_name, department, last_name, email, phone],
+      SET first_name = ?, 
+        last_name = ?, 
+        department = ?,
+        email = ?, 
+        phone = ? 
+      WHERE id = ?;`,
+    [first_name, last_name, department, email, phone, id],
   );
 
   return { id, ...professor };
